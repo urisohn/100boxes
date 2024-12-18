@@ -7,15 +7,19 @@
 #3 Histograms for gains
 #4 Histograms for losses
 #5 Histograms for mixed gambles 
+#6 Implausible valuations
+#7 mixed gambles 
+
+#-------------------------------
 
 #0 load the pkgs & data
     
   library('groundhog')
-  pkgs=c('this.path')
-  date='2024-11-15'
-  groundhog.library(pkgs,date)
-  
-  #GROUNDHOG NOTE:
+    pkgs=c('this.path')
+    date='2024-11-15'
+    groundhog.library(pkgs,date)
+    
+    #GROUNDHOG NOTE:
   # Groundhog loads the version of each package as current on the specified date.
   # When re-running this code, you can change the date to a more recent one.
   # Most likely the script will run fine with the new date, and it will load 
@@ -167,13 +171,7 @@
           
       }
 
-     
-  
-#4 Errors
-       
-       
-       l='L'
-       n=10
+    
 
 #3 histograms for gains
     n.all = length(unique(df$ID))
@@ -218,7 +216,7 @@
       mtext(paste0("Subset without errors (N=",n.0,")"), outer = TRUE, cex = 1.5, font = 2)
       
 
-#5 Implausible valuations
+#6 Implausible valuations
       
       
   #How many people may more than $10 for a 10% chance of 25
@@ -226,19 +224,8 @@
       mean(df.e0$lottery[df.e0$taskName=="G10"]>15)
       
       
-#4 histograms for losses
-    par(mfrow=c(2,2))
-      hist3(data=df, l='L',n=10)
-      hist3(data=df, l='L',n=25)
-      hist3(data=df, l='L',n=75)
-      hist3(data=df, l='L',n=90)
-      
 
-      mean(df$lottery[df$taskName=="L10"]<= -15)
-      
-      median(df$lottery[df$taskName=="L10"])
-      
-#5 mixed gambles 
+#7 mixed gambles 
       
       lottery.A10=df$lottery[df$taskName=='A10']
       lottery.A15=df$lottery[df$taskName=='A15']
@@ -254,82 +241,19 @@
       hist2(mirror.A15,main="For sure get mean(-$15 , $x) vs $0 for sure",xlab='$x chosen ')
      
       
-#Shares with impossible values 
-      mean(lottery.A10<=0)
-      mean(lottery.A15<=0)
-      
-      mean(mirror.A10<=0)
-      mean(mirror.A10<10)
-      mean(mirror.A10<9)
-      
-      mean(mirror.A15<15)
-      
-      mean(mirror.A15<=0)
-
-#5 Conditionls
-      
-    lottery.G10=df$lottery[df$taskName=='G10']  
-    lottery.G25=df$lottery[df$taskName=='G250']  
-    mirror.G10=df$mirror[df$taskName=='G10']  
-    mirror.G25=df$mirror[df$taskName=='G25']  
-    
-    mean(lottery.G10[mirror.G10==2.5])
-    mean(mirror.G10[lottery.G10==2.5])
-    
-
-    
-#6 By errors\
-  par(mfrow=c(2,2))
-  df3=subset(df,errors<2)
-    hist3(data=df3, l='G',n=10)
-    hist3(data=df3, l='G',n=25)
-    hist3(data=df3, l='G',n=75)
-    hist3(data=df3, l='G',n=90)
-    
-    
-    
-    
-    
-    
-###########################################
-      
-#Exploration
-      
-    
-#4 Most frequent values are not that differe  
-      t1=table(df$lottery[df$taskName=='G75'])
-      t2=table(df$mirror[df$taskName=='G75'])
-      
-   
-  
-    
-    
-#5 Try to eliminate patently implausible answers    
-  #IDs with bad answers
-        sub.g10 = df$ID[((df$lottery>=10 | df$mirror>=10) & df$taskName=='G10')]
-        sub.g90 = df$ID[((df$lottery<5  | df$mirror<5)  & df$taskName=='G90')]   
-        sub.confused=c(sub.g10, sub.g90)
-  #Drop _all_ their data
-    df1=df[!df$ID %in% sub.confused,]
-
-    par(mfrow=c(2,2))
-      hist3(data=df1, l='G',n=10)
-      hist3(data=df1, l='G',n=25)
-      hist3(data=df1, l='G',n=75)
-      hist3(data=df1, l='G',n=90)
-      
-      
-   #Focus on them
-      df2=df[df$ID %in% sub.g10,]
-      df2p=df[!df$ID %in% sub.g10,]
-      par(mfrow=c(2,2))
-        hist3(data=df2, l='G',n=10)
-        hist3(data=df2, l='G',n=25)
-        hist3(data=df2, l='G',n=75)
-        hist3(data=df2, l='G',n=90)
+  #Shares with impossible values 
+        mean(lottery.A10<=0)
+        mean(lottery.A15<=0)
         
-      par(mfrow=c(1,2))
-        hist3(data=df2, l='G',n=75)
-        hist3(data=df2p, l='G',n=75)
-       
-        
+        mean(mirror.A10<=0)
+        mean(mirror.A10<10)
+        mean(mirror.A10<9)
+        mean(mirror.A15<15)
+        mean(mirror.A15<=0)
+
+
+
+    
+    
+    
+
